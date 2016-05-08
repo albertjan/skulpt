@@ -819,6 +819,8 @@ def make_skulpt_js(options,dest):
         os.chmod(os.path.join(dest, OUTFILE_REG), 0o444)
 
 def run_in_browser(fn, options):
+    builtinfn = os.path.join(DIST_DIR, OUTFILE_LIB)
+
     shutil.rmtree(RUN_DIR, ignore_errors=True)
     if not os.path.exists(RUN_DIR): os.mkdir(RUN_DIR)
     docbi(options,RUN_DIR)
@@ -826,10 +828,17 @@ def run_in_browser(fn, options):
     for f in getFileList(FILE_TYPE_TEST):
         scripts.append('<script type="text/javascript" src="%s"></script>' %
                 os.path.join('../..', f))
+
+    scripts.append('<script type="text/javascript" src="../../dist/skulpt-stdlib.js"></script>')
     scripts = "\n".join(scripts)
 
     with open (fn,'r') as runfile:
         prog = runfile.read()
+
+    with open(builtinfn, "w") as f:
+        f.write(getBuiltinsAsJson(options))
+        if options.verbose:
+            print ". Wrote {0}".format(builtinfn)
 
     with open('support/run_template.html') as tpfile:
         page = tpfile.read()
