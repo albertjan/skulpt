@@ -194,8 +194,10 @@ var AllRunTests = [];
 var runpass = 0;
 var runfail = 0;
 var rundisabled = 0;
+
 function testRun(name, nocatch, debugMode)
 {
+    print("running test: " + name);
     try { var input = read(name + ".py"); }
     catch (e) {
         try { read(name + ".py.disabled"); rundisabled += 1;}
