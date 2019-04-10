@@ -853,7 +853,7 @@ Compiler.prototype.caugassign = function (s) {
     switch (e.constructor) {
         case Sk.ast.Attribute:
             to = this.vexpr(e.value);
-            auge = new Attribute(e.value, e.attr, Sk.ast.AugLoad, e.lineno, e.col_offset);
+            auge = new Sk.ast.Attribute(e.value, e.attr, Sk.ast.AugLoad, e.lineno, e.col_offset);
             aug = this.vexpr(auge, undefined, to);
             val = this.vexpr(s.value);
             res = this._gr("inplbinopattr", "Sk.abstr.numberInplaceBinOp(", aug, ",", val, ",'", s.op.prototype._astname, "')");
@@ -863,7 +863,7 @@ Compiler.prototype.caugassign = function (s) {
             // Only compile the subscript value once
             to = this.vexpr(e.value);
             augsub = this.vslicesub(e.slice);
-            auge = new Subscript(e.value, augsub, Sk.ast.AugLoad, e.lineno, e.col_offset);
+            auge = new Sk.ast.Subscript(e.value, augsub, Sk.ast.AugLoad, e.lineno, e.col_offset);
             aug = this.vexpr(auge, undefined, to, augsub);
             val = this.vexpr(s.value);
             res = this._gr("inplbinopsubscr", "Sk.abstr.numberInplaceBinOp(", aug, ",", val, ",'", s.op.prototype._astname, "')");
