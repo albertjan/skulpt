@@ -669,6 +669,9 @@ SymbolTable.prototype.visitExpr = function (e) {
         case Sk.ast.Set:
             this.SEQExpr(e.elts);
             break;
+        case Sk.ast.Starred:
+            this.visitExpr(e.value);
+            break;
         default:
             goog.asserts.fail("Unhandled type " + e.constructor.name + " in visitExpr");
     }

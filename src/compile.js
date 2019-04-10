@@ -512,7 +512,7 @@ Compiler.prototype.ccall = function (e) {
     var args = this.vseqexpr(e.args);
 
     //print(JSON.stringify(e, null, 2));
-    if (e.keywords.length > 0 || e.starargs || e.kwargs) {
+    if (e.keywords.length > 0 || e.args[0].constructor === Sk.ast.Starred || e.kwargs) {
         kwarray = [];
         for (i = 0; i < e.keywords.length; ++i) {
             kwarray.push("'" + e.keywords[i].arg.v + "'");
@@ -521,8 +521,8 @@ Compiler.prototype.ccall = function (e) {
         keywords = "[" + kwarray.join(",") + "]";
         starargs = "undefined";
         kwargs = "undefined";
-        if (e.starargs) {
-            starargs = this.vexpr(e.starargs);
+        if (e.args[0].constructor === Sk.ast.Starred) {
+            starargs = this.vexpr(e.args[0].value);
         }
         if (e.kwargs) {
             kwargs = this.vexpr(e.kwargs);
@@ -820,8 +820,10 @@ Compiler.prototype.vexpr = function (e, data, augvar, augsubs) {
             return this.ctuplelistorset(e, data, 'tuple');
         case Sk.ast.Set:
             return this.ctuplelistorset(e, data, 'set');
+        case Sk.ast.Starred:
+            break;
         default:
-            goog.asserts.fail("unhandled case " + e.constructor + " vexpr");
+            goog.asserts.fail("unhandled case " + e.constructor.name + " vexpr");
     }
 };
 
@@ -834,6 +836,11 @@ Compiler.prototype.vseqexpr = function (exprs, data) {
     var ret;
     goog.asserts.assert(data === undefined || exprs.length === data.length);
     ret = [];
+
+    // if (exprs.length === 1 && exprs[0].constructor === Sk.ast.Starred) {
+    //     exprs = exprs[0].value;
+    // }
+
     for (i = 0; i < exprs.length; ++i) {
         ret.push(this.vexpr(exprs[i], data === undefined ? undefined : data[i]));
     }
@@ -1797,7 +1804,7 @@ Compiler.prototype.buildcodeobj = function (n, coname, decorator_list, args, cal
     if (vararg) {
         start = funcArgs.length;
 
-        this.u.localnames.push(vararg.v);
+        this.u.localnames.push(vararg.arg.v);
         this.u.varDeclsCode += vararg.v + "=new Sk.builtins['tuple'](Array.prototype.slice.call(arguments," + start + (hasFree ? ",-1)" : ")") + "); /*vararg*/";
     }
 
