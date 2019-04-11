@@ -1812,6 +1812,7 @@ Compiler.prototype.buildcodeobj = function (n, coname, decorator_list, args, cal
         start = funcArgs.length;
 
         this.u.localnames.push(vararg.arg.v);
+        this.u.varDeclsCode += vararg.arg.v + "=new Sk.builtins['tuple'](Array.prototype.slice.call(arguments," + start + (hasFree ? ",-1)" : ")") + "); /*vararg*/";
         this.u.varDeclsCode += "$gbl['" + vararg.arg.v + "']=new Sk.builtins['tuple'](Array.prototype.slice.call(arguments," + start + (hasFree ? ",-1)" : ")") + "); /*vararg*/";
     }
 
@@ -1819,8 +1820,8 @@ Compiler.prototype.buildcodeobj = function (n, coname, decorator_list, args, cal
     // initialize kwarg, if any
     //
     if (kwarg) {
-        this.u.localnames.push(kwarg.v);
-        this.u.varDeclsCode += kwarg.v + "=new Sk.builtins['dict']($kwa);";
+        this.u.localnames.push(kwarg.arg.v);
+        this.u.varDeclsCode += kwarg.arg.v + "=new Sk.builtins['dict']($kwa);";
     }
 
     //
