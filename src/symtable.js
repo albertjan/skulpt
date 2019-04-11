@@ -637,17 +637,17 @@ SymbolTable.prototype.visitExpr = function (e) {
         case Sk.ast.Call:
             this.visitExpr(e.func);
             this.SEQExpr(e.args);
-            for (i = 0; i < e.keywords.length; ++i) {
-                this.visitExpr(e.keywords[i].value);
-            }
-            //print(JSON.stringify(e.starargs, null, 2));
-            //print(JSON.stringify(e.kwargs, null,2));
-            if (e.starargs) {
-                this.visitExpr(e.starargs);
-            }
-            if (e.kwargs) {
-                this.visitExpr(e.kwargs);
-            }
+            // for (i = 0; i < e.keywords.length; ++i) {
+            //     this.visitExpr(e.keywords[i].value);
+            // }
+            // //print(JSON.stringify(e.starargs, null, 2));
+            // //print(JSON.stringify(e.kwargs, null,2));
+            // if (e.starargs) {
+            //     this.visitExpr(e.starargs);
+            // }
+            // if (e.kwargs) {
+            //     this.visitExpr(e.kwargs);
+            // }
             break;
         case Sk.ast.Num:
         case Sk.ast.Str:
