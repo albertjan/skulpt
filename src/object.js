@@ -13,20 +13,13 @@ Sk.builtin.object = function () {
         return new Sk.builtin.object();
     }
 
-    var __init__ = function __init__() {
-        return Sk.builtin.none.none$;
-    };
-
-    __init__.co_kwargs = 1;
-
-    this["$d"] = {
-        __init__: __init__
-    };
-
     return this;
 };
 
-
+Sk.builtin.object.prototype.__init__ = function __init__() {
+    return Sk.builtin.none.none$;
+};
+Sk.builtin.object.prototype.__init__.co_kwargs = 1;
 
 Sk.builtin._tryGetSubscript = function(dict, pyName) {
     try {

@@ -567,7 +567,7 @@ Sk.builtin.type.typeLookup = function (type, pyName) {
         if (res !== undefined) {
             return res;
         }
-        if (base.prototype && base.prototype[jsName] !== undefined) {
+        if (base.prototype && base.prototype.hasOwnProperty(jsName)) {
             return base.prototype[jsName];
         }
     }
