@@ -75,15 +75,16 @@ Sk.doOneTimeInitialization = function (canSuspend) {
         var base;
 
         for (base = parent; base !== undefined; base = base.tp$base) {
-            bases.push(base);
+            // abstract classes don't belong in the __bases__ or __mro__
+            if (!base.sk$abstract) {
+                bases.push(base);
+            }
         }
 
-        child.tp$mro = new Sk.builtin.tuple([child]);
-        if (!child.tp$base){
-            child.tp$base = bases[0];
-        }
+        bases = new Sk.builtin.tuple(bases);
         child["$d"] = new Sk.builtin.dict([]);
-        child["$d"].mp$ass_subscript(Sk.builtin.type.basesStr_, new Sk.builtin.tuple(bases));
+        child["$d"].mp$ass_subscript(Sk.builtin.type.basesStr_, bases);
+        child.tp$mro = new Sk.builtin.tuple(Sk.builtin.type.buildMRO_(child));
         child["$d"].mp$ass_subscript(Sk.builtin.type.mroStr_, child.tp$mro);
     };
 

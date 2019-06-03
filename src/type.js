@@ -572,6 +572,11 @@ Sk.builtin.type.typeLookup = function (type, pyName) {
         }
     }
 
+    // if we can't find it in the MRO look in the prototype.
+    if (type.prototype && type.prototype[jsName]) {
+        return type.prototype[jsName];
+    }
+
     return undefined;
 };
 
